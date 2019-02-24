@@ -2,34 +2,50 @@
 // in the future, if we ever wanted to use these handlers with a different db
 const db = require('../services/airtable');
 
+function pruneProjectData(obj, type) {
+	return Object.assign({}, obj.fields, {
+		id: obj.id,
+		type
+	});
+}
+
 async function getOneProjectType(req, res, next) {
+	const {name} = req.params;
+
 	try {
 		const records = await db('project_types').select({view: 'Grid view'}).firstPage();
 
-		// Prune all records except the one whose name corresponds to req.name
+		// Prune all records except the one whose name corresponds to req.params.name
 		const desiredRecord = records.filter(rec => {
-			return rec.get('name') === req.params.name;
+			return rec.get('name') === name;
 		});
 
 		// Get the array of project ids linked to the desired record, then use async
-		// db method 'find' to load the project for each id.
-		const desiredProjects = await Promise.all(desiredRecord[0].get('projects')
-			.map(async projectID => {
-				const foundProject = await db('projects').find(projectID);
-				// Prune unneeded data from found object
-				return Object.assign({}, foundProject.fields, {
-					id: foundProject.id
-				});
-			})
+		// db method 'find' to load promise for each id.  Await all promises at end
+		// so that requests can be made concurrently.
+		const desiredProjects = await Promise.all(
+			desiredRecord[0]
+				.get('projects')
+				.map(
+					async projectID => db('projects').find(projectID)
+				)
 		);
 
-		res.json(desiredProjects);
+		// Prune unneeded data from found objects
+		const prunedData = desiredProjects.map(
+			project => pruneProjectData(project, name)
+		)
+
+		// End req/res cycle
+		res.json(prunedData);
 	}
 
 	catch(err) {
 		next(err);
 	}
 }
+
+// The following is unused for the moment
 
 async function getAllRecords(req, res, next) {
 	try {

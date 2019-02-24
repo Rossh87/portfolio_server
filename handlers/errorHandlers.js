@@ -1,6 +1,6 @@
 function handleErrors(err, req, res, next) {
 	if(err) {
-		res.json({
+		res.status(404).json({
 			name: 'From custom err handler',
 			message: err.message
 		});
