@@ -12,6 +12,7 @@ const cors = require('cors');
 // Get routers
 const projectRoutes = require('./routes/projectRoutes');
 const emailRoutes = require('./routes/emailRoutes');
+const downloadRoutes = require('./routes/downloadRoutes');
 
 // Add middlewares
 app.use(bodyParser.json());
@@ -21,6 +22,7 @@ app.use(express.static(`${__dirname}/../portfolio_client/build`));
 // routes
 app.use('/api/projects', projectRoutes);
 app.use('/api/contact', emailRoutes);
+app.use('/api/download', downloadRoutes);
 
 
 // Serve bundle
