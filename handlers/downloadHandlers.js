@@ -1,7 +1,7 @@
 const path = require('path');
 
 function sendResume(req, res) {
-	const file = path.resolve(process.cwd(), 'resources', 'resume_pdf.pdf');
+	const file = path.resolve(__dirname, '..', 'resources', 'resume_pdf.pdf');
 	res.download(file);
 }
 
