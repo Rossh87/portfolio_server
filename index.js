@@ -22,9 +22,9 @@ app.use(cors());
 // client-side build process handles file versioning,
 // so we can safely cache responses for a long time.
 app.use(express.static(
-	`${__dirname}/../portfolio_client/build`),
+	`${__dirname}/../portfolio_client/build`,
 	{maxAge: '30 days'}
-);
+));
 
 // routes.  Note these routes *must* terminate the req/res cycle
 // Otherwise the request will fall through to the wildcard route below,
