@@ -19,14 +19,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Serve static assets (i.e. React bundles).  Note that
-// client-side build process handles file versioning,
+// build process handles file versioning of client-side files,
 // so we can safely cache responses for a long time.
 app.use(express.static(
 	`${__dirname}/../portfolio_client/build`,
 	{maxAge: '30 days'}
 ));
 
-// routes.  Note these routes *must* terminate the req/res cycle
+// Routes.  Note these routes *must* terminate the req/res cycle
 // Otherwise the request will fall through to the wildcard route below,
 // and server will respond with index.html rather than just AJAX data.
 app.use('/api/projects', projectRoutes);
