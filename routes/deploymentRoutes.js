@@ -15,9 +15,11 @@ const updateClient = () => {
 };
 
 const requestSignatureIsValid = (incomingSignature, payload, secret) => {
-    const signatureToMatch = createHmac("sha1", secret)
-        .update(payload)
-        .digest("hex");
+    const signatureToMatch =
+        "sha1=" +
+        createHmac("sha1", secret)
+            .update(payload)
+            .digest("hex");
     return timingSafeEqual(
         Buffer.from(incomingSignature),
         Buffer.from(signatureToMatch)
