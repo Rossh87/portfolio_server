@@ -1,24 +1,24 @@
 {
-  "name": "portfolio_api_server",
-  "version": "1.0.0",
-  "description": "server for portfolio client",
-  "main": "index.js",
-  "author": "Ross Hunter",
-  "license": "MIT",
-  "scripts": {
-    "start": "nodemon -r dotenv/config index.js",
-    "debug": "nodemon --inspect-brk -r dotenv/config index.js"
-  },
-  "dependencies": {
-    "airtable": "^0.5.8",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.5",
-    "express": "^4.16.4",
-    "express-validator": "^5.3.1",
-    "mailgun-js": "^0.22.0"
-  },
-  "devDependencies": {
-    "dotenv": "^6.2.0",
-    "nodemon": "^1.18.10"
-  }
+    "name": "portfolio_api_server",
+    "version": "1.0.0",
+    "description": "server for portfolio client",
+    "main": "index.js",
+    "author": "Ross Hunter",
+    "license": "MIT",
+    "scripts": {
+        "start": "node -r dotenv/config index.js",
+        "debug": "nodemon --inspect-brk -r dotenv/config index.js"
+    },
+    "dependencies": {
+        "airtable": "^0.5.8",
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.5",
+        "express": "^4.16.4",
+        "express-validator": "^5.3.1",
+        "mailgun-js": "^0.22.0"
+    },
+    "devDependencies": {
+        "dotenv": "^6.2.0",
+        "nodemon": "^1.18.10"
+    }
 }
