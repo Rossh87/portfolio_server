@@ -14,20 +14,25 @@ const updateClient = () => {
     });
 };
 
-const genComparisonHash = (body) => {
-    const hmac = createHmac("sha1", WEBHOOK_SECRET);
-
-    hmac.update(body);
-
-    return `sha1=${hmac.digest("hex")}`;
+const requestSignatureIsValid = (incomingSignature, payload, secret) => {
+    const signatureToMatch = createHmac("sha1", secret)
+        .update(payload)
+        .digest("hex");
+    return timingSafeEqual(
+        Buffer.from(incomingSignature),
+        Buffer.from(signatureToMatch)
+    );
 };
 
 router.post("/", (req, res) => {
-    // convert to buffer for timing-safe comparison
-    const incomingHashBuffer = Buffer.from(req.get("X-Hub-Signature"));
-    const comparisonHashBuffer = genComparisonHash(req.body);
+    // get signature from request header
+    const incomingSignature = req.get("X-Hub-Signature");
 
-    if (timingSafeEqual(incomingHashBuffer, comparisonHashBuffer)) {
+    // stringify the JSON payload of request so it can be added to
+    // HMAC hash
+    const payload = JSON.stringify(req.body);
+
+    if (requestSignatureIsValid(incomingSignature, payload, WEBHOOK_SECRET)) {
         updateClient();
         res.send("Client update request accepted");
     } else {
