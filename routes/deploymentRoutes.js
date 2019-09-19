@@ -5,13 +5,16 @@ const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const { createHmac, timingSafeEqual } = require("crypto");
 
 const updateClient = () => {
-    exec("scripts/updateClient.sh", (err, stdout, stderr) => {
-        if (err) {
-            throw err;
-        }
+    exec(
+        "/home/ross/portfolio_server/scripts/updateClient.sh",
+        (err, stdout, stderr) => {
+            if (err) {
+                throw err;
+            }
 
-        console.log(stdout);
-    });
+            console.log(stdout);
+        }
+    );
 };
 
 const requestSignatureIsValid = (incomingSignature, payload, secret) => {
