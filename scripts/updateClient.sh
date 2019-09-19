@@ -6,6 +6,8 @@ export GIT_WORK_TREE=$CLIENT_WORK_TREE
 
 git pull origin master
 
+yarn --cwd $GIT_WORK_TREE install
+
 yarn --cwd $GIT_WORK_TREE build
 
 export -n GIT_DIR
